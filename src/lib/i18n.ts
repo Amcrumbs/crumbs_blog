@@ -1,0 +1,253 @@
+import { cookies } from "next/headers";
+
+export const locales = ["zh", "en"] as const;
+export type Locale = (typeof locales)[number];
+
+export const localeCookieName = "personal-os-locale";
+
+export function isLocale(value: string | undefined | null): value is Locale {
+  return value === "zh" || value === "en";
+}
+
+export async function getLocale(): Promise<Locale> {
+  const jar = await cookies();
+  const value = jar.get(localeCookieName)?.value;
+  return isLocale(value) ? value : "zh";
+}
+
+export const dictionaries = {
+  zh: {
+    meta: {
+      title: "Personal OS",
+      description: "一个私有优先的个人工作台，包含公开笔记、常用工具、网站导航和留言板。",
+    },
+    nav: {
+      home: "首页",
+      notes: "笔记",
+      logs: "日志",
+      tools: "工具",
+      links: "导航",
+      guestbook: "留言板",
+      private: "私密区",
+      subtitle: "本地工作台",
+      status: "状态",
+      mode: "模式",
+      modeValue: "公开/私密",
+      toolsStatus: "工具",
+      toolsStatusValue: "框架已搭好",
+      language: "语言",
+    },
+    home: {
+      modules: {
+        notes: "公开笔记库",
+        logs: "日志与私密日志",
+        tools: "常用工具框架",
+        links: "网站导航与收藏",
+        guestbook: "匿名留言板",
+      },
+      title: "用于笔记、工具、链接和痕迹的安静工作台。",
+      description: "自己用为主，也能给访客看。这里是知识记录、常用工具、公开导航和留言入口的统一工作台。",
+      command: "cmd+k / 即将支持",
+      recent: "recent.entries",
+      open: "打开",
+      shortcuts: "tool.shortcuts",
+      publicLinks: "public.links",
+    },
+    pages: {
+      notes: {
+        eyebrow: "content://notes",
+        title: "笔记",
+        description: "公开笔记库，用来沉淀学习记录、代码片段和长期可复用的想法。",
+      },
+      logs: {
+        eyebrow: "journal://public",
+        title: "日志",
+        description: "公开日志时间线，记录阶段性进展、项目想法和可展示的日常痕迹。",
+      },
+      tools: {
+        eyebrow: "tools://catalog",
+        title: "工具",
+        description: "常用工具目录先搭好页面框架，真实转换和处理能力后续逐个接入。",
+      },
+      links: {
+        eyebrow: "links://navigation",
+        title: "导航",
+        description: "公开网站导航放在上方，个人收藏只会在密码解锁后显示。",
+      },
+      guestbook: {
+        eyebrow: "guestbook://anonymous",
+        title: "留言板",
+        description: "访客可以匿名留言。新留言会记录为 pending，不会触发通知。",
+      },
+      privateLocked: {
+        eyebrow: "private://locked",
+        title: "私密工作区",
+        description: "私密日志和个人收藏会在密码解锁前保持隐藏。",
+      },
+      privateUnlocked: {
+        eyebrow: "private://unlocked",
+        title: "私密工作区",
+        description: "私密日志与个人收藏已解锁。本区使用单密码 session，不是多用户账号系统。",
+      },
+    },
+    private: {
+      bookmarks: "个人收藏",
+      privateMarker: "私密",
+      unlockTitle: "解锁私密工作区",
+      unlockDescription: "输入站点密码后可查看私密日志和个人收藏。",
+      passwordLabel: "密码",
+      passwordPlaceholder: "PRIVATE_SITE_PASSWORD",
+      unlockButton: "解锁",
+      wrongPassword: "密码不正确，私密内容仍然隐藏。",
+      hiddenBookmarks: "个人收藏已隐藏。解锁后会在这里显示私有书签，公开访客不会看到具体条目。",
+      openPrivate: "打开私密工作区",
+    },
+    tools: {
+      uploadTitle: "拖入或选择文件",
+      uploadHint: "当前只是占位。文件不会被上传或转换。",
+      inputLabel: "输入",
+      textPlaceholder: "在这里粘贴内容...",
+      runButton: "实现后运行",
+      statusTitle: "实现状态",
+      statusBodyPrefix: "这个工具当前是",
+      statusBodySuffix: "状态。它展示未来的交互模型，但不会执行真实处理。",
+      privacyHint: "privacy_hint",
+      status: {
+        placeholder: "占位",
+        ready: "可用",
+      },
+    },
+    guestbook: {
+      formTitle: "留下留言",
+      formDescription: "匿名可用，不会发送通知。新留言会以 pending 状态记录。",
+      displayName: "显示名",
+      anonymous: "匿名访客",
+      message: "留言",
+      messagePlaceholder: "写点什么...",
+      submit: "提交",
+      required: "留言不能为空。",
+      tooLong: "留言不能超过 600 个字符。",
+      invalid: "留言格式不正确。",
+      success: "留言已记录为 pending，审核通过后会公开显示。",
+    },
+  },
+  en: {
+    meta: {
+      title: "Personal OS",
+      description: "A private-first personal workspace for public notes, utilities, links, and a guestbook.",
+    },
+    nav: {
+      home: "Home",
+      notes: "Notes",
+      logs: "Logs",
+      tools: "Tools",
+      links: "Links",
+      guestbook: "Guestbook",
+      private: "Private",
+      subtitle: "local workspace",
+      status: "status",
+      mode: "Mode",
+      modeValue: "public/private",
+      toolsStatus: "Tools",
+      toolsStatusValue: "scaffolded",
+      language: "Language",
+    },
+    home: {
+      modules: {
+        notes: "Public note library",
+        logs: "Logs and private journals",
+        tools: "Utility framework",
+        links: "Web navigation and bookmarks",
+        guestbook: "Anonymous guestbook",
+      },
+      title: "A quiet command center for notes, tools, links, and traces.",
+      description: "Built for daily personal use first, while still giving visitors a polished public surface.",
+      command: "cmd+k / soon",
+      recent: "recent.entries",
+      open: "open",
+      shortcuts: "tool.shortcuts",
+      publicLinks: "public.links",
+    },
+    pages: {
+      notes: {
+        eyebrow: "content://notes",
+        title: "Notes",
+        description: "A public note library for learning records, code snippets, and durable ideas.",
+      },
+      logs: {
+        eyebrow: "journal://public",
+        title: "Logs",
+        description: "A public timeline for project progress, visible daily traces, and working notes.",
+      },
+      tools: {
+        eyebrow: "tools://catalog",
+        title: "Tools",
+        description: "A utility catalog with complete page scaffolding. Real processors can be added one by one later.",
+      },
+      links: {
+        eyebrow: "links://navigation",
+        title: "Links",
+        description: "Public website navigation appears first. Personal bookmarks stay hidden until the private area is unlocked.",
+      },
+      guestbook: {
+        eyebrow: "guestbook://anonymous",
+        title: "Guestbook",
+        description: "Visitors can leave anonymous messages. New messages are recorded as pending and send no notifications.",
+      },
+      privateLocked: {
+        eyebrow: "private://locked",
+        title: "Private Workspace",
+        description: "Private logs and personal bookmarks stay hidden until the site password is entered.",
+      },
+      privateUnlocked: {
+        eyebrow: "private://unlocked",
+        title: "Private Workspace",
+        description: "Private logs and personal bookmarks are unlocked. This area uses one site password, not a multi-user account system.",
+      },
+    },
+    private: {
+      bookmarks: "Personal bookmarks",
+      privateMarker: "private",
+      unlockTitle: "Unlock private workspace",
+      unlockDescription: "Enter the site password to view private logs and personal bookmarks.",
+      passwordLabel: "password",
+      passwordPlaceholder: "PRIVATE_SITE_PASSWORD",
+      unlockButton: "Unlock",
+      wrongPassword: "Incorrect password. Private content is still hidden.",
+      hiddenBookmarks: "Personal bookmarks are hidden. Unlock to reveal private links; public visitors cannot see them.",
+      openPrivate: "open private workspace",
+    },
+    tools: {
+      uploadTitle: "Drop or select a file",
+      uploadHint: "Placeholder only. No file is uploaded or converted yet.",
+      inputLabel: "input",
+      textPlaceholder: "Paste content here...",
+      runButton: "Run when implemented",
+      statusTitle: "Implementation status",
+      statusBodyPrefix: "This tool is currently",
+      statusBodySuffix: "It shows the future interaction model without performing real processing.",
+      privacyHint: "privacy_hint",
+      status: {
+        placeholder: "placeholder",
+        ready: "ready",
+      },
+    },
+    guestbook: {
+      formTitle: "Leave a message",
+      formDescription: "Anonymous is fine. No notification is sent. New messages are recorded as pending.",
+      displayName: "display_name",
+      anonymous: "Anonymous visitor",
+      message: "message",
+      messagePlaceholder: "Write something...",
+      submit: "Submit",
+      required: "Message is required.",
+      tooLong: "Message must be 600 characters or fewer.",
+      invalid: "Invalid message format.",
+      success: "Message recorded as pending. It will appear publicly after approval.",
+    },
+  },
+} as const;
+
+export function getDictionary(locale: Locale) {
+  return dictionaries[locale];
+}

@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #16120f;
+  --bg-panel: #211a15;
+  --bg-panel-strong: #2a211a;
+  --line: #4a392d;
+  --line-soft: #33281f;
+  --text: #f4eadb;
+  --muted: #c5aa8d;
+  --faint: #8d7560;
+  --green: #9eb37b;
+  --cyan: #d9a35f;
+  --amber: #e0b56c;
+  --red: #d9826d;
+  --copper: #b86f49;
+  --moss: #7f8f62;
+  --font-serif: "Cormorant Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-zh: "LXGW WenKai", "TsangerYuYangT", "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(rgba(240, 223, 191, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240, 223, 191, 0.03) 1px, transparent 1px),
+    var(--bg);
+  background-size: 36px 36px, 36px 36px, auto;
+  font-family: var(--font-zh);
+  letter-spacing: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(224, 181, 108, 0.24);
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+.surface {
+  background:
+    linear-gradient(180deg, rgba(244, 234, 219, 0.045), rgba(244, 234, 219, 0.015)),
+    rgba(33, 26, 21, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 1px 0 rgba(244, 234, 219, 0.07),
+    0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.surface-strong {
+  background:
+    linear-gradient(180deg, rgba(224, 181, 108, 0.08), rgba(244, 234, 219, 0.025)),
+    rgba(42, 33, 26, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.text-faint {
+  color: var(--faint);
+}
+
+.prose-workspace {
+  color: #eadcc9;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.prose-workspace h1,
+.prose-workspace h2,
+.prose-workspace h3 {
+  color: #fff7ea;
+  font-family: var(--font-serif), var(--font-zh);
+  line-height: 1.25;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-workspace p,
+.prose-workspace ul,
+.prose-workspace ol,
+.prose-workspace pre {
+  margin: 1rem 0;
+}
+
+.prose-workspace code {
+  background: rgba(224, 181, 108, 0.1);
+  border: 1px solid rgba(224, 181, 108, 0.18);
+  border-radius: 4px;
+  padding: 0.1rem 0.3rem;
+  font-family: "JetBrains Mono", Consolas, monospace;
+}
+
+.editorial-title {
+  font-family: var(--font-serif), var(--font-zh);
+  font-weight: 600;
+}
+
+.garden-map {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.garden-map::before {
+  content: "";
+  position: absolute;
+  inset: 26px;
+  background:
+    linear-gradient(32deg, transparent 28%, rgba(224, 181, 108, 0.22) 29%, rgba(224, 181, 108, 0.22) 30%, transparent 31%),
+    linear-gradient(145deg, transparent 44%, rgba(126, 143, 98, 0.24) 45%, rgba(126, 143, 98, 0.24) 46%, transparent 47%),
+    linear-gradient(82deg, transparent 56%, rgba(184, 111, 73, 0.22) 57%, rgba(184, 111, 73, 0.22) 58%, transparent 59%);
+  opacity: 0.7;
+}
+
+.garden-node {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(33, 26, 21, 0.92);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px rgba(240, 223, 191, 0.05);
+}

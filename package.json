@@ -1,0 +1,32 @@
+{
+  "name": "my-personal-os",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node -r ./scripts/patch-readlink.cjs ./node_modules/next/dist/bin/next dev",
+    "build": "node -r ./scripts/patch-readlink.cjs ./node_modules/next/dist/bin/next build",
+    "start": "node -r ./scripts/patch-readlink.cjs ./node_modules/next/dist/bin/next start",
+    "lint": "node -r ./scripts/patch-readlink.cjs ./node_modules/next/dist/bin/next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.0",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.468.0",
+    "next": "14.2.23",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "tailwindcss": "^4.1.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.23",
+    "typescript": "^5.7.0"
+  }
+}

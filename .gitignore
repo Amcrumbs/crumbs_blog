@@ -1,0 +1,15 @@
+.next
+node_modules
+out
+dist
+.env
+.env.local
+guestbook-data.json
+content/*/private-logs
+.npm-cache
+tsconfig.tsbuildinfo
+archives
+.agents
+.claude
+.codex
+.cursor
