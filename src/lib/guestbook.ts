@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { isMissingPath } from "@/lib/fs-errors";
 import type { Locale } from "@/lib/i18n";
 
 export type GuestbookStatus = "pending" | "approved" | "hidden";
@@ -33,15 +34,51 @@ async function ensureDataFile() {
   await fs.mkdir(path.dirname(dataFile), { recursive: true });
   try {
     await fs.access(dataFile);
-  } catch {
-    await fs.writeFile(dataFile, JSON.stringify(seedMessages, null, 2), "utf8");
+  } catch (error) {
+    if (!isMissingPath(error)) {
+      throw error;
+    }
+
+    await writeGuestbookMessages(seedMessages);
   }
+}
+
+function isGuestbookStatus(value: unknown): value is GuestbookStatus {
+  return value === "pending" || value === "approved" || value === "hidden";
+}
+
+function isGuestbookMessage(value: unknown): value is GuestbookMessage {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const message = value as Record<string, unknown>;
+  return (
+    typeof message.id === "string" &&
+    typeof message.displayName === "string" &&
+    typeof message.message === "string" &&
+    typeof message.createdAt === "string" &&
+    isGuestbookStatus(message.status)
+  );
+}
+
+function parseGuestbookMessages(raw: string) {
+  const parsed: unknown = JSON.parse(raw);
+  if (!Array.isArray(parsed) || !parsed.every(isGuestbookMessage)) {
+    throw new Error(`Invalid guestbook data in ${dataFile}`);
+  }
+
+  return parsed;
+}
+
+async function writeGuestbookMessages(messages: GuestbookMessage[]) {
+  await fs.writeFile(dataFile, JSON.stringify(messages, null, 2), "utf8");
 }
 
 export async function getGuestbookMessages() {
   await ensureDataFile();
   const raw = await fs.readFile(dataFile, "utf8");
-  return JSON.parse(raw) as GuestbookMessage[];
+  return parseGuestbookMessages(raw);
 }
 
 export async function getApprovedMessages() {
@@ -59,6 +96,6 @@ export async function addGuestbookMessage(input: { displayName: string; message:
     status: "pending",
   };
   messages.unshift(next);
-  await fs.writeFile(dataFile, JSON.stringify(messages, null, 2), "utf8");
+  await writeGuestbookMessages(messages);
   return next;
 }

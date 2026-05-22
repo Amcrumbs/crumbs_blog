@@ -79,6 +79,19 @@ export function getTool(slug: string) {
   return tools.find((tool) => tool.slug === slug) ?? null;
 }
 
+export function groupToolsByCategory(items: ToolDefinition[]) {
+  return items.reduce<Array<{ category: string; tools: ToolDefinition[] }>>((groups, tool) => {
+    const group = groups.find((item) => item.category === tool.category);
+    if (group) {
+      group.tools.push(tool);
+    } else {
+      groups.push({ category: tool.category, tools: [tool] });
+    }
+
+    return groups;
+  }, []);
+}
+
 export function localizedTool(tool: ToolDefinition, locale: Locale) {
   return {
     ...tool,

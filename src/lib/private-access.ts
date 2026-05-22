@@ -4,7 +4,12 @@ import { createHash, timingSafeEqual } from "node:crypto";
 export const privateCookieName = "personal-os-private";
 
 function getPassword() {
-  return process.env.PRIVATE_SITE_PASSWORD ?? "change-me";
+  const password = process.env.PRIVATE_SITE_PASSWORD;
+  if (!password) {
+    throw new Error("PRIVATE_SITE_PASSWORD must be configured before private access can be used.");
+  }
+
+  return password;
 }
 
 function digest(value: string) {

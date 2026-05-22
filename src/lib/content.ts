@@ -3,6 +3,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import { isMissingPath } from "@/lib/fs-errors";
 import type { Locale } from "@/lib/i18n";
 
 export type ContentType = "note" | "log";
@@ -24,36 +25,82 @@ type ContentFilter = {
   visibility?: ContentVisibility;
 };
 
-const folders: Array<{ folder: string; type: ContentType; visibility: ContentVisibility }> = [
+type ContentFolder = {
+  folder: string;
+  type: ContentType;
+  visibility: ContentVisibility;
+};
+
+const folders: ContentFolder[] = [
   { folder: "notes", type: "note", visibility: "public" },
   { folder: "logs", type: "log", visibility: "public" },
   { folder: "private-logs", type: "log", visibility: "private" },
 ];
 
-async function fileExists(filePath: string) {
+async function readMarkdownFiles(dir: string) {
   try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
+    const files = await fs.readdir(dir);
+    return files.filter((file) => file.endsWith(".md") || file.endsWith(".mdx"));
+  } catch (error) {
+    if (isMissingPath(error)) {
+      return [];
+    }
+    throw error;
   }
 }
 
-async function readMarkdown(filePath: string, slug: string, fallback: { type: ContentType; visibility: ContentVisibility }): Promise<ContentEntry> {
+function requireString(value: unknown, field: string, filePath: string) {
+  if (typeof value !== "string" || value.trim() === "") {
+    throw new Error(`Missing required frontmatter field "${field}" in ${filePath}`);
+  }
+  return value;
+}
+
+function readDate(value: unknown, filePath: string) {
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+
+  return requireString(value, "date", filePath);
+}
+
+function readTags(value: unknown, filePath: string) {
+  if (!Array.isArray(value)) {
+    throw new Error(`Missing required frontmatter field "tags" in ${filePath}`);
+  }
+
+  return value.map((tag) => String(tag));
+}
+
+function readContentType(value: unknown, expected: ContentType, filePath: string): ContentType {
+  if (value !== expected) {
+    throw new Error(`Expected frontmatter field "type" to be "${expected}" in ${filePath}`);
+  }
+
+  return expected;
+}
+
+function readContentVisibility(value: unknown, expected: ContentVisibility, filePath: string): ContentVisibility {
+  if (value !== expected) {
+    throw new Error(`Expected frontmatter field "visibility" to be "${expected}" in ${filePath}`);
+  }
+
+  return expected;
+}
+
+async function readMarkdown(filePath: string, slug: string, folder: ContentFolder): Promise<ContentEntry> {
   const raw = await fs.readFile(filePath, "utf8");
   const parsed = matter(raw);
   const processed = await remark().use(html).process(parsed.content);
-  const tags = Array.isArray(parsed.data.tags) ? parsed.data.tags.map(String) : [];
-  const dateValue = parsed.data.date instanceof Date ? parsed.data.date.toISOString().slice(0, 10) : String(parsed.data.date ?? "");
 
   return {
     slug,
-    title: String(parsed.data.title ?? slug),
-    summary: String(parsed.data.summary ?? ""),
-    date: dateValue,
-    tags,
-    type: (parsed.data.type as ContentType) ?? fallback.type,
-    visibility: (parsed.data.visibility as ContentVisibility) ?? fallback.visibility,
+    title: requireString(parsed.data.title, "title", filePath),
+    summary: requireString(parsed.data.summary, "summary", filePath),
+    date: readDate(parsed.data.date, filePath),
+    tags: readTags(parsed.data.tags, filePath),
+    type: readContentType(parsed.data.type, folder.type, filePath),
+    visibility: readContentVisibility(parsed.data.visibility, folder.visibility, filePath),
     html: processed.toString(),
   };
 }
@@ -67,10 +114,9 @@ export async function getAllContent(locale: Locale, filter: ContentFilter = {}) 
     if (filter.visibility && filter.visibility !== folder.visibility) continue;
 
     const dir = path.join(contentRoot, folder.folder);
-    if (!(await fileExists(dir))) continue;
-    const files = await fs.readdir(dir);
+    const files = await readMarkdownFiles(dir);
 
-    for (const file of files.filter((item) => item.endsWith(".md") || item.endsWith(".mdx"))) {
+    for (const file of files) {
       const slug = file.replace(/\.mdx?$/, "");
       entries.push(await readMarkdown(path.join(dir, file), slug, folder));
     }
