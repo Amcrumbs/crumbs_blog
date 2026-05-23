@@ -17,7 +17,7 @@ export default async function GuestbookPage() {
           {messages.map((message) => (
             <article key={message.id} className="surface p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h2 className="text-sm font-medium text-white">{message.displayName}</h2>
+                <h2 className="text-sm font-medium text-[var(--text)]">{message.displayName}</h2>
                 <time className="font-mono text-xs text-faint">{new Date(message.createdAt).toLocaleString(locale === "zh" ? "zh-CN" : "en-US")}</time>
               </div>
               <p className="mt-3 text-sm leading-6 text-muted">{message.message}</p>

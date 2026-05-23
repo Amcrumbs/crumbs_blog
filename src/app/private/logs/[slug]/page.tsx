@@ -15,5 +15,5 @@ export default async function PrivateLogDetailPage({ params }: { params: { slug:
   const entry = await getContentBySlug(locale, slug, { type: "log", visibility: "private" });
   if (!entry) notFound();
 
-  return <ContentArticle entry={entry} marker={t.private.privateMarker} metaClassName="text-[var(--amber)]" />;
+  return <ContentArticle entry={entry} marker={t.private.privateMarker} metaClassName="text-[var(--warning)]" />;
 }

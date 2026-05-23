@@ -11,17 +11,17 @@ function LinkGrid({ groups, locale }: { groups: ReturnType<typeof groupLinks>; l
     <div className="grid gap-5">
       {Object.entries(groups).map(([category, links]) => (
         <section key={category} className="surface p-5">
-          <h2 className="font-mono text-sm text-[var(--green)]">{category}</h2>
+          <h2 className="font-mono text-sm text-[var(--accent-strong)]">{category}</h2>
           <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {links.map((link) => (
-              <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className="surface-strong block p-4 hover:border-[var(--cyan)]">
+              <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className="surface-strong interactive-card block p-4">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="grid h-9 w-9 place-items-center border border-[var(--line)] bg-black/25 font-mono text-xs text-[var(--cyan)]">
+                  <div className="grid h-9 w-9 place-items-center rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--accent-soft)] font-mono text-xs text-[var(--accent-strong)]">
                     {link.iconLabel ?? link.title.slice(0, 2)}
                   </div>
                   <ExternalLink size={16} className="text-faint" />
                 </div>
-                <h3 className="mt-4 text-lg font-medium text-white">{link.title}</h3>
+                <h3 className="mt-4 text-lg font-medium text-[var(--text)]">{link.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted">{link.description[locale]}</p>
               </a>
             ))}
@@ -44,8 +44,8 @@ export default async function LinksPage() {
 
       <section className="mt-5 surface p-5">
         <div className="mb-4 flex items-center gap-3">
-          <LockKeyhole size={18} className="text-[var(--amber)]" />
-          <h2 className="text-lg font-medium text-white">{t.private.bookmarks}</h2>
+          <LockKeyhole size={18} className="text-[var(--warning)]" />
+          <h2 className="text-lg font-medium text-[var(--text)]">{t.private.bookmarks}</h2>
         </div>
         {unlocked ? (
           <LinkGrid groups={groupLinks(privateLinks, locale)} locale={locale} />
@@ -57,7 +57,7 @@ export default async function LinksPage() {
         )}
       </section>
       <div className="mt-5 text-right">
-        <Link href="/private" className="font-mono text-xs text-[var(--cyan)]">{t.private.openPrivate}</Link>
+        <Link href="/private" className="font-mono text-xs text-[var(--accent-strong)]">{t.private.openPrivate}</Link>
       </div>
     </>
   );

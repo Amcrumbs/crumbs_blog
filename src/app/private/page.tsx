@@ -33,11 +33,11 @@ export default async function PrivatePage() {
           ))}
         </section>
         <section className="surface p-5">
-          <h2 className="text-lg font-medium text-white">{t.private.bookmarks}</h2>
+          <h2 className="text-lg font-medium text-[var(--text)]">{t.private.bookmarks}</h2>
           <div className="mt-4 grid gap-3">
             {privateLinks.map((link) => (
-              <Link key={link.url} href={link.url} className="border border-[var(--line)] p-3 hover:border-[var(--cyan)]">
-                <p className="text-sm text-white">{link.title}</p>
+              <Link key={link.url} href={link.url} className="rounded-[var(--radius-sm)] border border-[var(--line)] p-3 hover:border-[var(--accent)]">
+                <p className="text-sm text-[var(--text)]">{link.title}</p>
                 <p className="mt-1 text-xs text-muted">{link.description[locale]}</p>
               </Link>
             ))}
