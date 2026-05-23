@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { createHash, timingSafeEqual } from "node:crypto";
 
-export const privateCookieName = "personal-os-private";
+export const privateCookieName = "crumbs-os-private";
 
 function getPassword() {
   const password = process.env.PRIVATE_SITE_PASSWORD;

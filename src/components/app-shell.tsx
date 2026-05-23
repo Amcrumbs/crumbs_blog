@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Home, Link as LinkIcon, MessageSquare, NotebookTabs, Shield, Wrench } from "lucide-react";
+import { CardNav } from "@/components/card-nav";
+import ClickSpark from "@/components/ClickSpark";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import type { Locale } from "@/lib/i18n";
+import DotField from "@/components/DotField";
 
 type NavLabels = {
   home: string;
@@ -34,69 +35,82 @@ export function AppShell({
 }) {
   const pathname = usePathname();
   const navItems = [
-    { href: "/", label: labels.home, icon: Home },
-    { href: "/notes", label: labels.notes, icon: NotebookTabs },
-    { href: "/logs", label: labels.logs, icon: BookOpen },
-    { href: "/tools", label: labels.tools, icon: Wrench },
-    { href: "/links", label: labels.links, icon: LinkIcon },
-    { href: "/guestbook", label: labels.guestbook, icon: MessageSquare },
-    { href: "/private", label: labels.private, icon: Shield },
+    { href: "/notes", label: labels.notes },
+    { href: "/logs", label: labels.logs },
+    { href: "/tools", label: labels.tools },
+    { href: "/links", label: labels.links },
+    { href: "/guestbook", label: labels.guestbook },
+    { href: "/private", label: labels.private },
+  ];
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const cardItems = [
+    {
+      label: "crumbs",
+      bgColor: "#ffffff",
+      textColor: "#111111",
+      links: navItems.slice(0, 3).map((item) => ({
+        href: item.href,
+        label: item.label,
+        active: isActive(item.href),
+      })),
+    },
+    {
+      label: "index",
+      bgColor: "#eeeeee",
+      textColor: "#111111",
+      links: navItems.slice(3, 5).map((item) => ({
+        href: item.href,
+        label: item.label,
+        active: isActive(item.href),
+      })),
+    },
+    {
+      label: "more",
+      bgColor: "#d8d8d8",
+      textColor: "#111111",
+      links: navItems.slice(5).map((item) => ({
+        href: item.href,
+        label: item.label,
+        active: isActive(item.href),
+      })),
+    },
   ];
 
   return (
-    <div className="min-h-screen">
-      <div className="mx-auto grid min-h-screen max-w-[1540px] grid-cols-1 lg:grid-cols-[260px_1fr]">
-        <aside className="border-b border-[var(--line)] bg-[rgba(22,18,15,0.82)] p-4 backdrop-blur lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r">
-          <Link href="/" className="surface-strong flex items-center gap-3 px-3 py-3">
-            <div className="grid h-10 w-10 place-items-center border border-[var(--line)] bg-[rgba(14,10,8,0.45)] font-mono text-sm text-[var(--amber)]">
-              OS
-            </div>
-            <div>
-              <p className="editorial-title text-base text-white">Personal OS</p>
-              <p className="font-mono text-xs text-muted">{labels.subtitle}</p>
-            </div>
-          </Link>
-
-          <nav className="mt-5 grid gap-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex min-h-11 items-center gap-3 rounded-md border px-3 py-2 text-sm transition ${
-                    active
-                      ? "border-[var(--cyan)] bg-[rgba(224,181,108,0.12)] text-white"
-                      : "border-transparent text-muted hover:border-[var(--line)] hover:text-white"
-                  }`}
-                >
-                  <Icon size={17} />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="mt-6 border-t border-[var(--line)] pt-4">
-            <p className="font-mono text-xs uppercase text-faint">{labels.status}</p>
-            <div className="mt-3 grid gap-2 text-xs text-muted">
-              <p className="flex items-center justify-between">
-                <span>{labels.mode}</span>
-                <span className="text-[var(--green)]">{labels.modeValue}</span>
-              </p>
-              <p className="flex items-center justify-between">
-                <span>{labels.toolsStatus}</span>
-                <span className="text-[var(--amber)]">{labels.toolsStatusValue}</span>
-              </p>
-            </div>
+    <ClickSpark sparkColor="#000000">
+      <div className="relative min-h-screen bg-white">
+        <div className="fixed inset-0 z-0 bg-white">
+          <DotField
+            dotRadius={2}
+            dotSpacing={18}
+            cursorRadius={420}
+            bulgeStrength={48}
+            gradientFrom="rgba(0, 0, 0, 0.34)"
+            gradientTo="rgba(0, 0, 0, 0.34)"
+            glowColor="rgba(0, 0, 0, 0.08)"
+          />
+        </div>
+        <div className="relative z-10">
+          <CardNav
+            brand="crumbs os"
+            items={cardItems}
+            baseColor="#fff"
+            menuColor="#111"
+            buttonBgColor="#111"
+            buttonTextColor="#fff"
+            ctaHref="/"
+            ctaLabel={labels.home}
+          />
+          <div className="top-language-switcher">
+            <LanguageSwitcher locale={locale} label={labels.language} />
           </div>
-
-          <LanguageSwitcher locale={locale} label={labels.language} />
-        </aside>
-
-        <main className="px-4 py-4 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+          <div className="mx-auto min-h-screen max-w-[1560px]">
+            <main className="px-4 pb-5 pt-28 sm:px-6 lg:px-10 lg:pb-10">
+              {children}
+            </main>
+          </div>
+        </div>
       </div>
-    </div>
+    </ClickSpark>
   );
 }

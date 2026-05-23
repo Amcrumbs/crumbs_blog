@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 export const locales = ["zh", "en"] as const;
 export type Locale = (typeof locales)[number];
 
-export const localeCookieName = "personal-os-locale";
+export const localeCookieName = "crumbs-os-locale";
 
 export function isLocale(value: string | undefined | null): value is Locale {
   return value === "zh" || value === "en";
@@ -18,7 +18,7 @@ export async function getLocale(): Promise<Locale> {
 export const dictionaries = {
   zh: {
     meta: {
-      title: "Personal OS",
+      title: "crumbs os",
       description: "一个私有优先的个人工作台，包含公开笔记、常用工具、网站导航和留言板。",
     },
     nav: {
@@ -133,8 +133,8 @@ export const dictionaries = {
   },
   en: {
     meta: {
-      title: "Personal OS",
-      description: "A private-first personal workspace for public notes, utilities, links, and a guestbook.",
+      title: "crumbs os",
+      description: "A black-and-white personal blog space for notes, utilities, links, and a guestbook.",
     },
     nav: {
       home: "Home",
