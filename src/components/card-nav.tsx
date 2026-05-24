@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { ArrowUpRight } from "lucide-react";
 import "./CardNav.css";
@@ -43,11 +44,13 @@ export function CardNav({
   ctaHref: string;
   ctaLabel: string;
 }) {
+  const pathname = usePathname();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const navRef = useRef<HTMLElement | null>(null);
   const cardsRef = useRef<Array<HTMLDivElement | null>>([]);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const hasMountedRef = useRef(false);
 
   const calculateHeight = useCallback(() => {
     const navEl = navRef.current;
@@ -105,6 +108,21 @@ export function CardNav({
     return tl;
   }, [calculateHeight, ease]);
 
+  const resetMenu = useCallback(() => {
+    const tl = tlRef.current;
+    tl?.pause(0);
+    tl?.eventCallback("onReverseComplete", null);
+
+    setIsHamburgerOpen(false);
+    setIsExpanded(false);
+
+    if (navRef.current) {
+      gsap.set(navRef.current, { height: 60, overflow: "hidden" });
+    }
+
+    gsap.set(cardsRef.current, { y: 50, opacity: 0 });
+  }, []);
+
   useLayoutEffect(() => {
     const tl = createTimeline();
     tlRef.current = tl;
@@ -141,6 +159,15 @@ export function CardNav({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [calculateHeight, createTimeline, isExpanded]);
+
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
+    resetMenu();
+  }, [pathname, resetMenu]);
 
   const closeMenu = () => {
     const tl = tlRef.current;

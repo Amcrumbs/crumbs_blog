@@ -88,8 +88,12 @@ function readContentVisibility(value: unknown, expected: ContentVisibility, file
   return expected;
 }
 
-async function readMarkdown(filePath: string, slug: string, folder: ContentFolder): Promise<ContentEntry> {
-  const raw = await fs.readFile(filePath, "utf8");
+async function parseMarkdown(
+  raw: string,
+  filePath: string,
+  slug: string,
+  folder: ContentFolder,
+): Promise<ContentEntry> {
   const parsed = matter(raw);
   const processed = await remark().use(html).process(parsed.content);
 
@@ -118,7 +122,9 @@ export async function getAllContent(locale: Locale, filter: ContentFilter = {}) 
 
     for (const file of files) {
       const slug = file.replace(/\.mdx?$/, "");
-      entries.push(await readMarkdown(path.join(dir, file), slug, folder));
+      const filePath = path.join(dir, file);
+      const raw = await fs.readFile(filePath, "utf8");
+      entries.push(await parseMarkdown(raw, filePath, slug, folder));
     }
   }
 
