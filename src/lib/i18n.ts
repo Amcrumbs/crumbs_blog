@@ -38,6 +38,10 @@ export const dictionaries = {
       language: "语言",
     },
     home: {
+      hero: {
+        greeting: "嗨，欢迎来到 crumbs 的博客兼工作站！",
+        prompt: "点击导航栏开始探索吧",
+      },
       modules: {
         notes: "公开笔记库",
         logs: "日志与私密日志",
@@ -153,6 +157,10 @@ export const dictionaries = {
       language: "Language",
     },
     home: {
+      hero: {
+        greeting: "Hi, welcome to crumbs' blog and workstation!",
+        prompt: "Use the navigation to start exploring.",
+      },
       modules: {
         notes: "Public note library",
         logs: "Logs and private journals",

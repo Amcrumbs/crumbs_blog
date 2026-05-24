@@ -240,3 +240,63 @@ textarea:focus-visible {
   font-weight: 650;
   letter-spacing: 0;
 }
+
+.home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 8% auto auto 50%;
+  width: min(74vw, 980px);
+  height: min(74vw, 980px);
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.08), transparent 66%);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.home-hero-glow {
+  position: absolute;
+  inset: auto 50% 14%;
+  width: min(84vw, 1120px);
+  height: 220px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.08));
+  transform: translateX(-50%);
+  filter: blur(42px);
+  pointer-events: none;
+}
+
+.home-hero-title-clip,
+.home-hero-subtitle-clip {
+  overflow: hidden;
+}
+
+.home-hero-title {
+  font-family: var(--font-zh);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1.04;
+  padding-bottom: 0.12em;
+  text-wrap: balance;
+}
+
+.home-hero-subtitle {
+  font-family: var(--font-zh);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.24;
+  padding-bottom: 0.08em;
+}
+
+.home-hero-char {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+.home-hero-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.home-hero-space {
+  white-space: pre;
+}
