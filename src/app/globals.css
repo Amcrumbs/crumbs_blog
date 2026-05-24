@@ -270,11 +270,21 @@ textarea:focus-visible {
   overflow: hidden;
 }
 
+.home-hero-title-clip {
+  padding: 0.7em 0.45em 0.85em;
+  margin: -0.7em -0.45em -0.85em;
+}
+
+.home-hero-subtitle-clip {
+  padding: 0.22em 0.18em 0.3em;
+  margin: -0.22em -0.18em -0.3em;
+}
+
 .home-hero-title {
   font-family: var(--font-zh);
   font-weight: 900;
   letter-spacing: -0.05em;
-  line-height: 1.04;
+  line-height: 1.08;
   padding-bottom: 0.12em;
   text-wrap: balance;
 }

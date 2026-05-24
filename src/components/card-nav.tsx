@@ -212,11 +212,6 @@ export function CardNav({
           </button>
 
           <Link href="/" className="logo-container" onClick={closeMenu}>
-            <span className="logo-icon" aria-hidden="true">
-              <span className="logo-icon-dot" />
-              <span className="logo-icon-dot" />
-              <span className="logo-icon-dot" />
-            </span>
             <span className="logo">{brand}</span>
           </Link>
 

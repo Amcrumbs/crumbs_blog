@@ -92,7 +92,7 @@ export function AppShell({
         </div>
         <div className="relative z-10">
           <CardNav
-            brand="crumbs os"
+            brand="Crumbs OS"
             items={cardItems}
             baseColor="#fff"
             menuColor="#111"
