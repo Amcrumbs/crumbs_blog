@@ -1,0 +1,68 @@
+{
+  "identity": {
+    "nickname": "yin",
+    "codename": "crumbs",
+    "tagline": {
+      "zh": "我是一个全栈开发者，这里记录我的构建、思考与长期实验。",
+      "en": "I'm a full-stack developer. This is where I document what I build, how I think, and the long-term experiments I pursue."
+    },
+    "role": {
+      "zh": "开发者",
+      "en": "Developer"
+    },
+    "location": {
+      "country": {
+        "zh": "中国",
+        "en": "China"
+      },
+      "city": {
+        "zh": "深圳",
+        "en": "Shenzhen"
+      }
+    },
+    "illustration": {
+      "label": {
+        "zh": "插画占位",
+        "en": "Illustration placeholder"
+      }
+    },
+    "skills": {
+      "zh": ["开发流程化", "AI 应用开发", "Web 独立开发", "App 独立开发"],
+      "en": ["Development workflows", "AI app development", "Independent web apps", "Independent app products"]
+    },
+    "socialLinks": [
+      {
+        "id": "github",
+        "label": "GitHub",
+        "href": "https://github.com/"
+      },
+      {
+        "id": "x",
+        "label": "X",
+        "href": "https://x.com/"
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "href": "mailto:"
+      }
+    ]
+  },
+  "spotlight": {
+    "featuredProject": {
+      "name": "daily eat",
+      "summary": {
+        "zh": "这是我们自主开发的一款应用，用来重新组织日常饮食这件小事。",
+        "en": "An app we built independently to rethink and organize everyday eating."
+      }
+    },
+    "currentFocus": {
+      "zh": ["开发 agent", "正在完成这个 daily-eat 项目", "尝试开发一款自研产品"],
+      "en": ["Building agents", "Finishing the daily-eat project", "Exploring an independently developed product"]
+    },
+    "interests": {
+      "zh": ["绘画", "健身", "乒乓球", "玩游戏"],
+      "en": ["Drawing", "Fitness", "Table tennis", "Gaming"]
+    }
+  }
+}

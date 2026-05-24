@@ -2,10 +2,12 @@ import Link from "next/link";
 import { PageHeading } from "@/components/page-heading";
 import { PrivateUnlockForm } from "@/components/private-unlock-form";
 import { ContentCard } from "@/components/content-card";
+import { ProfileShowcaseEditor } from "@/components/profile-showcase-editor";
 import { getAllContent } from "@/lib/content";
 import { getDictionary, getLocale } from "@/lib/i18n";
 import { privateLinks } from "@/lib/links";
 import { hasPrivateAccess } from "@/lib/private-access";
+import { getProfileShowcase } from "@/lib/profile-showcase";
 
 export default async function PrivatePage() {
   const locale = await getLocale();
@@ -21,13 +23,17 @@ export default async function PrivatePage() {
     );
   }
 
-  const privateLogs = await getAllContent(locale, { type: "log", visibility: "private" });
+  const [privateLogs, profile] = await Promise.all([
+    getAllContent(locale, { type: "log", visibility: "private" }),
+    getProfileShowcase(),
+  ]);
 
   return (
     <>
       <PageHeading {...t.pages.privateUnlocked} />
-      <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
-        <section className="grid gap-4">
+      <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+        <section className="grid content-start gap-4">
+          <ProfileShowcaseEditor locale={locale} profile={profile} labels={t.private.profileEditor} />
           {privateLogs.map((entry) => (
             <ContentCard key={entry.slug} entry={entry} />
           ))}
