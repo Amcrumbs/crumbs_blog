@@ -1,0 +1,72 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { deleteContentAction, updateContentAction } from "@/app/admin/actions";
+import { AdminToolbar } from "@/components/admin-toolbar";
+import { requireAdminAccess } from "@/lib/admin-access";
+import { getEditableContentBySlug } from "@/lib/content-admin";
+import { isLocale, type Locale } from "@/lib/i18n";
+
+function resolveLocale(value: string | string[] | undefined): Locale {
+  const next = Array.isArray(value) ? value[0] : value;
+  return isLocale(next) ? next : "zh";
+}
+
+export default async function AdminNoteDetailPage({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { locale?: string | string[] };
+}) {
+  await requireAdminAccess();
+  const locale = resolveLocale(searchParams?.locale);
+  const entry = await getEditableContentBySlug(locale, "note", params.slug);
+  if (!entry) notFound();
+
+  return (
+    <>
+      <AdminToolbar title={`编辑笔记：${entry.title}`} description="第一版不支持直接改 slug；如需换 slug，建议新建后迁移内容。" />
+      <section className="mb-4 flex flex-wrap gap-2">
+        <Link href={`/notes/${entry.slug}`} className="button-primary px-4 py-2 text-sm">查看前台</Link>
+        <Link href={`/admin/notes?locale=${locale}`} className="button-primary px-4 py-2 text-sm">返回列表</Link>
+      </section>
+      <form action={updateContentAction} className="surface grid gap-4 p-5">
+        <input type="hidden" name="locale" value={locale} />
+        <input type="hidden" name="type" value="note" />
+        <input type="hidden" name="visibility" value="public" />
+        <input type="hidden" name="originalSlug" value={entry.slug} />
+        <label>
+          <span className="font-mono text-xs text-faint">slug</span>
+          <input value={entry.slug} readOnly className="field mt-2 px-3 py-2.5 opacity-70" />
+        </label>
+        <label>
+          <span className="font-mono text-xs text-faint">title</span>
+          <input name="title" defaultValue={entry.title} className="field mt-2 px-3 py-2.5" required />
+        </label>
+        <label>
+          <span className="font-mono text-xs text-faint">summary</span>
+          <textarea name="summary" rows={3} defaultValue={entry.summary} className="field mt-2 resize-y px-3 py-2.5" required />
+        </label>
+        <label>
+          <span className="font-mono text-xs text-faint">date</span>
+          <input name="date" type="date" defaultValue={entry.date} className="field mt-2 px-3 py-2.5" required />
+        </label>
+        <label>
+          <span className="font-mono text-xs text-faint">tags (逗号分隔)</span>
+          <input name="tags" defaultValue={entry.tags.join(", ")} className="field mt-2 px-3 py-2.5" required />
+        </label>
+        <label>
+          <span className="font-mono text-xs text-faint">body</span>
+          <textarea name="body" rows={18} defaultValue={entry.body} className="field mt-2 resize-y px-3 py-2.5" required />
+        </label>
+        <button type="submit" className="button-primary px-4 py-3 text-sm">保存修改</button>
+      </form>
+      <form action={deleteContentAction} className="mt-4">
+        <input type="hidden" name="locale" value={locale} />
+        <input type="hidden" name="type" value="note" />
+        <input type="hidden" name="slug" value={entry.slug} />
+        <button type="submit" className="button-primary px-4 py-3 text-sm">删除笔记</button>
+      </form>
+    </>
+  );
+}

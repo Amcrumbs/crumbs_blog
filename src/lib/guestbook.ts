@@ -99,3 +99,17 @@ export async function addGuestbookMessage(input: { displayName: string; message:
   await writeGuestbookMessages(messages);
   return next;
 }
+
+export async function updateGuestbookMessageStatus(id: string, status: GuestbookStatus) {
+  const messages = await getGuestbookMessages();
+  const next = messages.map((message) =>
+    message.id === id ? { ...message, status } : message,
+  );
+  await writeGuestbookMessages(next);
+}
+
+export async function deleteGuestbookMessage(id: string) {
+  const messages = await getGuestbookMessages();
+  const next = messages.filter((message) => message.id !== id);
+  await writeGuestbookMessages(next);
+}

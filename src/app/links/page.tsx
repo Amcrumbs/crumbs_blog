@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { ExternalLink, LockKeyhole } from "lucide-react";
 import { PageHeading } from "@/components/page-heading";
-import { PrivateUnlockForm } from "@/components/private-unlock-form";
-import { groupLinks, privateLinks, publicLinks } from "@/lib/links";
+import { groupLinks, getLinksByVisibility } from "@/lib/links";
+import { verifyAdminSession } from "@/lib/admin-access";
 import { getDictionary, getLocale, type Locale } from "@/lib/i18n";
-import { hasPrivateAccess } from "@/lib/private-access";
 
 function LinkGrid({ groups, locale }: { groups: ReturnType<typeof groupLinks>; locale: Locale }) {
   return (
@@ -35,7 +34,11 @@ function LinkGrid({ groups, locale }: { groups: ReturnType<typeof groupLinks>; l
 export default async function LinksPage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
-  const unlocked = await hasPrivateAccess();
+  const [isAdmin, publicLinks, privateLinks] = await Promise.all([
+    verifyAdminSession(),
+    getLinksByVisibility("public"),
+    getLinksByVisibility("private"),
+  ]);
 
   return (
     <>
@@ -47,12 +50,16 @@ export default async function LinksPage() {
           <LockKeyhole size={18} className="text-[var(--warning)]" />
           <h2 className="text-lg font-medium text-[var(--text)]">{t.private.bookmarks}</h2>
         </div>
-        {unlocked ? (
+        {isAdmin ? (
           <LinkGrid groups={groupLinks(privateLinks, locale)} locale={locale} />
         ) : (
           <div className="grid gap-4 lg:grid-cols-[1fr_420px]">
-            <p className="text-sm leading-6 text-muted">{t.private.hiddenBookmarks}</p>
-            <PrivateUnlockForm locale={locale} labels={t.private} />
+            <p className="text-sm leading-6 text-muted">
+              个人收藏现在跟随管理员登录态显示。未登录时只展示公开导航。
+            </p>
+            <Link href="/admin/login" className="button-primary inline-flex items-center justify-center px-4 py-3 text-sm">
+              进入管理员登录
+            </Link>
           </div>
         )}
       </section>

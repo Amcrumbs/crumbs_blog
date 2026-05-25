@@ -1,16 +1,26 @@
+import Link from "next/link";
 import { GuestbookForm } from "@/components/guestbook-form";
 import { PageHeading } from "@/components/page-heading";
+import { verifyAdminSession } from "@/lib/admin-access";
 import { getApprovedMessages } from "@/lib/guestbook";
 import { getDictionary, getLocale } from "@/lib/i18n";
 
 export default async function GuestbookPage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
+  const isAdmin = await verifyAdminSession();
   const messages = await getApprovedMessages();
 
   return (
     <>
       <PageHeading {...t.pages.guestbook} />
+      {isAdmin ? (
+        <div className="mb-4 text-right">
+          <Link href="/admin/guestbook" className="button-primary inline-flex px-4 py-2 text-sm">
+            管理留言板
+          </Link>
+        </div>
+      ) : null}
       <div className="grid gap-4 xl:grid-cols-[0.85fr_1.15fr]">
         <GuestbookForm locale={locale} labels={t.guestbook} />
         <section className="grid gap-3">

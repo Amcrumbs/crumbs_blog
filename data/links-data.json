@@ -1,0 +1,122 @@
+[
+  {
+    "id": "openai",
+    "title": "OpenAI",
+    "url": "https://openai.com",
+    "category": {
+      "zh": "AI",
+      "en": "AI"
+    },
+    "description": {
+      "zh": "AI 研究与产品。",
+      "en": "AI research and products."
+    },
+    "iconLabel": "AI",
+    "visibility": "public"
+  },
+  {
+    "id": "github",
+    "title": "GitHub",
+    "url": "https://github.com",
+    "category": {
+      "zh": "开发",
+      "en": "Development"
+    },
+    "description": {
+      "zh": "代码托管与项目协作。",
+      "en": "Code hosting and project collaboration."
+    },
+    "iconLabel": "GH",
+    "visibility": "public"
+  },
+  {
+    "id": "mdn",
+    "title": "MDN",
+    "url": "https://developer.mozilla.org",
+    "category": {
+      "zh": "开发",
+      "en": "Development"
+    },
+    "description": {
+      "zh": "Web 平台参考文档。",
+      "en": "Reference docs for the web platform."
+    },
+    "iconLabel": "MD",
+    "visibility": "public"
+  },
+  {
+    "id": "vercel",
+    "title": "Vercel",
+    "url": "https://vercel.com",
+    "category": {
+      "zh": "部署",
+      "en": "Deployment"
+    },
+    "description": {
+      "zh": "前端部署平台。",
+      "en": "Frontend deployment platform."
+    },
+    "iconLabel": "VC",
+    "visibility": "public"
+  },
+  {
+    "id": "tailwind-css",
+    "title": "Tailwind CSS",
+    "url": "https://tailwindcss.com",
+    "category": {
+      "zh": "设计",
+      "en": "Design"
+    },
+    "description": {
+      "zh": "Utility-first 样式参考。",
+      "en": "Utility-first styling reference."
+    },
+    "iconLabel": "TW",
+    "visibility": "public"
+  },
+  {
+    "id": "nextjs",
+    "title": "Next.js",
+    "url": "https://nextjs.org",
+    "category": {
+      "zh": "开发",
+      "en": "Development"
+    },
+    "description": {
+      "zh": "React 框架文档。",
+      "en": "React framework documentation."
+    },
+    "iconLabel": "NX",
+    "visibility": "public"
+  },
+  {
+    "id": "local-admin",
+    "title": "Local Admin",
+    "url": "http://localhost:3000/admin",
+    "category": {
+      "zh": "个人",
+      "en": "Personal"
+    },
+    "description": {
+      "zh": "管理员工作台入口。",
+      "en": "Admin workspace entry."
+    },
+    "iconLabel": "AD",
+    "visibility": "private"
+  },
+  {
+    "id": "draft-inbox",
+    "title": "Draft Inbox",
+    "url": "https://example.com/drafts",
+    "category": {
+      "zh": "个人",
+      "en": "Personal"
+    },
+    "description": {
+      "zh": "个人草稿集合占位。",
+      "en": "Placeholder for personal draft collection."
+    },
+    "iconLabel": "DI",
+    "visibility": "private"
+  }
+]

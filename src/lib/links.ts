@@ -1,83 +1,112 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import { isMissingPath } from "@/lib/fs-errors";
 import type { Locale } from "@/lib/i18n";
 
+export type LinkVisibility = "public" | "private";
+
 export type SiteLink = {
+  id: string;
   title: string;
   url: string;
   category: Record<Locale, string>;
   description: Record<Locale, string>;
   iconLabel?: string;
-  visibility: "public" | "private";
+  visibility: LinkVisibility;
 };
 
-export const publicLinks: SiteLink[] = [
-  {
-    title: "OpenAI",
-    url: "https://openai.com",
-    category: { zh: "AI", en: "AI" },
-    description: { zh: "AI 研究与产品。", en: "AI research and products." },
-    iconLabel: "AI",
-    visibility: "public",
-  },
-  {
-    title: "GitHub",
-    url: "https://github.com",
-    category: { zh: "开发", en: "Development" },
-    description: { zh: "代码托管与项目协作。", en: "Code hosting and project collaboration." },
-    iconLabel: "GH",
-    visibility: "public",
-  },
-  {
-    title: "MDN",
-    url: "https://developer.mozilla.org",
-    category: { zh: "开发", en: "Development" },
-    description: { zh: "Web 平台参考文档。", en: "Reference docs for the web platform." },
-    iconLabel: "MD",
-    visibility: "public",
-  },
-  {
-    title: "Vercel",
-    url: "https://vercel.com",
-    category: { zh: "部署", en: "Deployment" },
-    description: { zh: "前端部署平台。", en: "Frontend deployment platform." },
-    iconLabel: "VC",
-    visibility: "public",
-  },
-  {
-    title: "Tailwind CSS",
-    url: "https://tailwindcss.com",
-    category: { zh: "设计", en: "Design" },
-    description: { zh: "Utility-first 样式参考。", en: "Utility-first styling reference." },
-    iconLabel: "TW",
-    visibility: "public",
-  },
-  {
-    title: "Next.js",
-    url: "https://nextjs.org",
-    category: { zh: "开发", en: "Development" },
-    description: { zh: "React 框架文档。", en: "React framework documentation." },
-    iconLabel: "NX",
-    visibility: "public",
-  },
-];
+const dataFile = path.join(process.cwd(), "data", "links-data.json");
 
-export const privateLinks: SiteLink[] = [
-  {
-    title: "Local Admin",
-    url: "http://localhost:3000/private",
-    category: { zh: "个人", en: "Personal" },
-    description: { zh: "私密工作区入口。", en: "Private workspace entry." },
-    iconLabel: "LA",
-    visibility: "private",
-  },
-  {
-    title: "Draft Inbox",
-    url: "https://example.com/drafts",
-    category: { zh: "个人", en: "Personal" },
-    description: { zh: "个人草稿集合占位。", en: "Placeholder for personal draft collection." },
-    iconLabel: "DI",
-    visibility: "private",
-  },
-];
+function isLinkVisibility(value: unknown): value is LinkVisibility {
+  return value === "public" || value === "private";
+}
+
+function isLocaleRecord(value: unknown): value is Record<Locale, string> {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const record = value as Record<string, unknown>;
+  return typeof record.zh === "string" && typeof record.en === "string";
+}
+
+function isSiteLink(value: unknown): value is SiteLink {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const link = value as Record<string, unknown>;
+  return (
+    typeof link.id === "string" &&
+    typeof link.title === "string" &&
+    typeof link.url === "string" &&
+    isLocaleRecord(link.category) &&
+    isLocaleRecord(link.description) &&
+    (typeof link.iconLabel === "string" || typeof link.iconLabel === "undefined") &&
+    isLinkVisibility(link.visibility)
+  );
+}
+
+async function ensureLinksFile() {
+  await fs.mkdir(path.dirname(dataFile), { recursive: true });
+  try {
+    await fs.access(dataFile);
+  } catch (error) {
+    if (!isMissingPath(error)) {
+      throw error;
+    }
+
+    await fs.writeFile(dataFile, "[]\n", "utf8");
+  }
+}
+
+async function readLinks() {
+  await ensureLinksFile();
+  const raw = await fs.readFile(dataFile, "utf8");
+  const parsed: unknown = JSON.parse(raw);
+  if (!Array.isArray(parsed) || !parsed.every(isSiteLink)) {
+    throw new Error(`Invalid links data in ${dataFile}`);
+  }
+  return parsed;
+}
+
+async function writeLinks(links: SiteLink[]) {
+  await fs.writeFile(dataFile, `${JSON.stringify(links, null, 2)}\n`, "utf8");
+}
+
+export async function getAllLinks() {
+  return readLinks();
+}
+
+export async function getLinksByVisibility(visibility: LinkVisibility) {
+  const links = await readLinks();
+  return links.filter((link) => link.visibility === visibility);
+}
+
+export async function getLinkById(id: string) {
+  const links = await readLinks();
+  return links.find((link) => link.id === id) ?? null;
+}
+
+export async function saveLink(input: SiteLink) {
+  const links = await readLinks();
+  const index = links.findIndex((link) => link.id === input.id);
+
+  if (index >= 0) {
+    links[index] = input;
+  } else {
+    links.push(input);
+  }
+
+  await writeLinks(links);
+  return input;
+}
+
+export async function deleteLink(id: string) {
+  const links = await readLinks();
+  const next = links.filter((link) => link.id !== id);
+  await writeLinks(next);
+}
 
 export function groupLinks(links: SiteLink[], locale: Locale) {
   return links.reduce<Record<string, SiteLink[]>>((groups, link) => {

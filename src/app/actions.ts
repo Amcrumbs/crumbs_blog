@@ -4,9 +4,9 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { verifyAdminSession } from "@/lib/admin-access";
 import { addGuestbookMessage } from "@/lib/guestbook";
 import { dictionaries, isLocale, localeCookieName, type Locale } from "@/lib/i18n";
-import { grantPrivateAccess, hasPrivateAccess, verifyPrivatePassword } from "@/lib/private-access";
 import { profileShowcaseSchema, saveProfileShowcase } from "@/lib/profile-showcase";
 
 const guestbookSchema = z.object({
@@ -42,18 +42,6 @@ export async function setLocale(formData: FormData) {
   redirect(nextPath.startsWith("/") ? nextPath : "/");
 }
 
-export async function unlockPrivate(_: { ok: boolean; error: string } | null, formData: FormData) {
-  const locale = formLocale(formData);
-  const password = String(formData.get("password") ?? "");
-
-  if (!verifyPrivatePassword(password)) {
-    return { ok: false, error: dictionaries[locale].private.wrongPassword };
-  }
-
-  await grantPrivateAccess();
-  redirect("/private");
-}
-
 export async function submitGuestbook(_: { ok: boolean; error: string } | null, formData: FormData) {
   const locale = formLocale(formData);
   const t = dictionaries[locale].guestbook;
@@ -83,7 +71,7 @@ export async function saveProfileShowcaseAction(
   const locale = formLocale(formData);
   const t = dictionaries[locale].private.profileEditor;
 
-  if (!(await hasPrivateAccess())) {
+  if (!(await verifyAdminSession())) {
     return { ok: false, message: t.lockedError };
   }
 
