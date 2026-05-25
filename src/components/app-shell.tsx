@@ -46,7 +46,7 @@ export function AppShell({
   const cardItems = [
     {
       label: "crumbs",
-      bgColor: "#ffffff",
+      bgColor: "rgba(255, 255, 255, 0.72)",
       textColor: "#111111",
       links: navItems.slice(0, 3).map((item) => ({
         href: item.href,
@@ -56,7 +56,7 @@ export function AppShell({
     },
     {
       label: "index",
-      bgColor: "#eeeeee",
+      bgColor: "rgba(245, 247, 247, 0.76)",
       textColor: "#111111",
       links: navItems.slice(3, 5).map((item) => ({
         href: item.href,
@@ -66,7 +66,7 @@ export function AppShell({
     },
     {
       label: "more",
-      bgColor: "#d8d8d8",
+      bgColor: "rgba(229, 233, 232, 0.78)",
       textColor: "#111111",
       links: navItems.slice(5).map((item) => ({
         href: item.href,
@@ -78,8 +78,8 @@ export function AppShell({
 
   return (
     <ClickSpark sparkColor="#000000">
-      <div className="relative min-h-screen bg-white">
-        <div className="fixed inset-0 z-0 bg-white">
+      <div className="relative min-h-screen bg-[var(--bg)]">
+        <div className="fixed inset-0 z-0 bg-[var(--bg)]">
           <DotField
             dotRadius={2}
             dotSpacing={18}
@@ -94,9 +94,9 @@ export function AppShell({
           <CardNav
             brand="Crumbs OS"
             items={cardItems}
-            baseColor="#fff"
+            baseColor="rgba(255, 255, 255, 0.64)"
             menuColor="#111"
-            buttonBgColor="#111"
+            buttonBgColor="rgba(17, 17, 17, 0.92)"
             buttonTextColor="#fff"
             ctaHref="/"
             ctaLabel={labels.home}

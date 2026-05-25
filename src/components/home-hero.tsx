@@ -193,7 +193,7 @@ export function HomeHero({
           className="mt-10 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface-strong)] px-4 py-2 text-sm tracking-[0.04em] text-[var(--muted)] shadow-[var(--shadow-soft)] sm:mt-12"
         >
           <span className="h-2 w-2 rounded-full bg-[var(--text)]" aria-hidden="true" />
-          NAVIGATION READY
+          PUBLIC INDEX ONLINE
         </p>
       </div>
     </section>

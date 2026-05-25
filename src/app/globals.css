@@ -2,22 +2,31 @@
 
 :root {
   color-scheme: light;
-  --bg: #ffffff;
-  --bg-subtle: #f5f5f5;
-  --surface: rgba(255, 255, 255, 0.82);
-  --surface-strong: rgba(255, 255, 255, 0.96);
-  --surface-glass: rgba(255, 255, 255, 0.68);
-  --line: rgba(0, 0, 0, 0.14);
-  --line-soft: rgba(0, 0, 0, 0.08);
-  --text: #111111;
-  --muted: #555555;
-  --faint: #8a8a8a;
-  --accent: #111111;
-  --accent-strong: #000000;
-  --accent-soft: rgba(0, 0, 0, 0.07);
-  --success: #333333;
-  --warning: #666666;
-  --danger: #111111;
+  --paper: oklch(98.5% 0.004 190);
+  --paper-soft: oklch(96.4% 0.006 190);
+  --paper-glass: oklch(100% 0 0 / 0.68);
+  --ink: oklch(17% 0.006 190);
+  --ink-muted: oklch(39% 0.01 190);
+  --ink-faint: oklch(61% 0.01 190);
+  --rule: oklch(18% 0.004 190 / 0.14);
+  --rule-soft: oklch(18% 0.004 190 / 0.08);
+  --status: oklch(50% 0.085 178);
+  --bg: var(--paper);
+  --bg-subtle: var(--paper-soft);
+  --surface: oklch(100% 0 0 / 0.82);
+  --surface-strong: oklch(100% 0 0 / 0.94);
+  --surface-glass: var(--paper-glass);
+  --line: var(--rule);
+  --line-soft: var(--rule-soft);
+  --text: var(--ink);
+  --muted: var(--ink-muted);
+  --faint: var(--ink-faint);
+  --accent: var(--ink);
+  --accent-strong: oklch(8% 0.004 190);
+  --accent-soft: oklch(18% 0.004 190 / 0.07);
+  --success: var(--status);
+  --warning: oklch(45% 0.05 85);
+  --danger: oklch(45% 0.08 25);
   --shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.08);
   --shadow-hover: 0 22px 70px rgba(0, 0, 0, 0.12);
   --radius-sm: 8px;
@@ -34,6 +43,7 @@
 html {
   background: var(--bg);
   color: var(--text);
+  overflow-x: clip;
 }
 
 body {
@@ -43,6 +53,7 @@ body {
   font-family: var(--font-zh);
   letter-spacing: 0;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 a {
