@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HomeProfileShowcaseBackground } from "@/components/home-profile-showcase-background";
 import { localizeList, localizeText, type ProfileShowcase } from "@/lib/profile-showcase";
 import type { Locale } from "@/lib/i18n";
 
@@ -15,7 +16,9 @@ export function HomeProfileShowcase({
 
   return (
     <section className="mx-auto max-w-5xl pb-16 sm:pb-24">
-      <article className="border-y border-[var(--line)] py-10 sm:py-14">
+      <div className="home-profile-showcase-card relative overflow-hidden px-6 sm:px-8 lg:px-10">
+        <HomeProfileShowcaseBackground />
+        <article className="relative z-10 border-y border-[var(--line)] py-10 sm:py-14">
         <p className="font-mono text-xs uppercase text-faint">
           {identity.codename} / {localizeText(identity.illustration.label, locale)}
         </p>
@@ -40,7 +43,7 @@ export function HomeProfileShowcase({
         </div>
       </article>
 
-      <article className="py-10 sm:py-14">
+        <article className="relative z-10 py-10 sm:py-14">
         <p className="font-mono text-xs uppercase text-faint">spotlight</p>
         <h2 className="editorial-title mt-4 text-3xl leading-tight text-[var(--text)] sm:text-5xl">
           {spotlight.featuredProject.name}
@@ -66,6 +69,7 @@ export function HomeProfileShowcase({
           </section>
         </div>
       </article>
+      </div>
     </section>
   );
 }
