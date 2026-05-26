@@ -94,7 +94,7 @@ export function AppShell({
           <CardNav
             brand="Crumbs OS"
             items={cardItems}
-            baseColor="rgba(255, 255, 255, 0.64)"
+            baseColor="rgba(255, 255, 255, 0.38)"
             menuColor="#111"
             buttonBgColor="rgba(17, 17, 17, 0.92)"
             buttonTextColor="#fff"
