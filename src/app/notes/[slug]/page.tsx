@@ -17,9 +17,12 @@ export default async function NoteDetailPage({ params }: { params: { slug: strin
   return (
     <>
       {isAdmin ? (
-        <div className="mb-4 text-right">
-          <Link href={`/admin/notes/${entry.slug}?locale=${locale}`} className="button-primary inline-flex px-4 py-2 text-sm">
-            编辑此笔记
+        <div className="mx-auto mb-6 max-w-[760px] text-right">
+          <Link
+            href={`/admin/notes/${entry.slug}?locale=${locale}`}
+            className="editorial-eyebrow underline decoration-dotted underline-offset-4 hover:text-[var(--text)]"
+          >
+            编辑此笔记 →
           </Link>
         </div>
       ) : null}

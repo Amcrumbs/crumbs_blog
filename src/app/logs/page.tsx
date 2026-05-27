@@ -11,7 +11,7 @@ export default async function LogsPage() {
   return (
     <>
       <PageHeading {...t.pages.logs} />
-      <div className="grid gap-4">
+      <div>
         {logs.map((entry) => (
           <ContentCard key={entry.slug} entry={entry} />
         ))}

@@ -15,24 +15,43 @@ export default async function GuestbookPage() {
     <>
       <PageHeading {...t.pages.guestbook} />
       {isAdmin ? (
-        <div className="mb-4 text-right">
-          <Link href="/admin/guestbook" className="button-primary inline-flex px-4 py-2 text-sm">
-            管理留言板
+        <div className="mb-8 text-right">
+          <Link
+            href="/admin/guestbook"
+            className="editorial-eyebrow underline decoration-dotted underline-offset-4 hover:text-[var(--text)]"
+          >
+            管理留言板 →
           </Link>
         </div>
       ) : null}
-      <div className="grid gap-4 xl:grid-cols-[0.85fr_1.15fr]">
+      <div className="grid gap-16 xl:grid-cols-[0.9fr_1.1fr] xl:gap-20">
         <GuestbookForm locale={locale} labels={t.guestbook} />
-        <section className="grid gap-3">
-          {messages.map((message) => (
-            <article key={message.id} className="surface p-4">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <h2 className="text-sm font-medium text-[var(--text)]">{message.displayName}</h2>
-                <time className="font-mono text-xs text-faint">{new Date(message.createdAt).toLocaleString(locale === "zh" ? "zh-CN" : "en-US")}</time>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-muted">{message.message}</p>
-            </article>
-          ))}
+        <section>
+          <h2 className="editorial-section-heading mb-2">
+            {t.guestbook.formTitle.includes("留言") ? "近期留言" : "Messages"}
+          </h2>
+          <div>
+            {messages.length === 0 ? (
+              <p className="editorial-lede py-10 text-base">—</p>
+            ) : (
+              messages.map((message) => (
+                <article
+                  key={message.id}
+                  className="border-b border-[var(--line)] py-8"
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="editorial-link-title">{message.displayName}</h3>
+                    <time className="editorial-row-date">
+                      {new Date(message.createdAt).toLocaleString(locale === "zh" ? "zh-CN" : "en-US")}
+                    </time>
+                  </div>
+                  <p className="mt-4 text-base leading-7 text-[var(--text)]">
+                    {message.message}
+                  </p>
+                </article>
+              ))
+            )}
+          </div>
         </section>
       </div>
     </>

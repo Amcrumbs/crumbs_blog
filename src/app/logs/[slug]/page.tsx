@@ -17,9 +17,12 @@ export default async function LogDetailPage({ params }: { params: { slug: string
   return (
     <>
       {isAdmin ? (
-        <div className="mb-4 text-right">
-          <Link href={`/admin/logs/${entry.slug}?locale=${locale}`} className="button-primary inline-flex px-4 py-2 text-sm">
-            编辑此日志
+        <div className="mx-auto mb-6 max-w-[760px] text-right">
+          <Link
+            href={`/admin/logs/${entry.slug}?locale=${locale}`}
+            className="editorial-eyebrow underline decoration-dotted underline-offset-4 hover:text-[var(--text)]"
+          >
+            编辑此日志 →
           </Link>
         </div>
       ) : null}

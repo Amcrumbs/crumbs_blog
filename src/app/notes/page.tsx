@@ -11,7 +11,7 @@ export default async function NotesPage() {
   return (
     <>
       <PageHeading {...t.pages.notes} />
-      <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+      <div>
         {notes.map((entry) => (
           <ContentCard key={entry.slug} entry={entry} />
         ))}

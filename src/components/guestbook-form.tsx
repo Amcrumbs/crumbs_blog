@@ -25,36 +25,36 @@ export function GuestbookForm({
   const [state, action] = useFormState(submitGuestbook, null);
 
   return (
-    <form action={action} className="surface p-5">
+    <form action={action}>
       <input type="hidden" name="locale" value={locale} />
-      <h2 className="text-lg font-medium text-[var(--text)]">{labels.formTitle}</h2>
-      <p className="mt-2 text-sm text-muted">{labels.formDescription}</p>
-      <label className="mt-5 block">
-        <span className="font-mono text-xs text-faint">{labels.displayName}</span>
+      <h2 className="editorial-section-heading mb-3">{labels.formTitle}</h2>
+      <p className="editorial-lede text-base">{labels.formDescription}</p>
+      <label className="mt-8 block">
+        <span className="editorial-eyebrow">{labels.displayName}</span>
         <input
           name="displayName"
           maxLength={40}
-          className="field mt-2 px-3 py-3"
+          className="mt-3 w-full border-0 border-b border-[var(--line)] bg-transparent pb-2 text-lg text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)]"
           placeholder={labels.anonymous}
         />
       </label>
-      <label className="mt-4 block">
-        <span className="font-mono text-xs text-faint">{labels.message}</span>
+      <label className="mt-8 block">
+        <span className="editorial-eyebrow">{labels.message}</span>
         <textarea
           name="message"
           required
           maxLength={600}
           rows={6}
-          className="field mt-2 resize-y px-3 py-3"
+          className="mt-3 w-full resize-y border-0 border-b border-[var(--line)] bg-transparent pb-2 text-base leading-7 text-[var(--text)] outline-none transition-colors focus:border-[var(--accent)]"
           placeholder={labels.messagePlaceholder}
         />
       </label>
       {state?.error ? (
-        <p className={`mt-3 text-sm ${state.ok ? "text-[var(--success)]" : "text-[var(--danger)]"}`}>{state.error}</p>
+        <p className={`mt-4 text-sm ${state.ok ? "text-[var(--success)]" : "text-[var(--danger)]"}`}>{state.error}</p>
       ) : null}
       <button
         type="submit"
-        className="button-primary mt-5 inline-flex items-center gap-2 px-4 py-3 text-sm disabled:opacity-60"
+        className="mt-8 inline-flex items-center gap-2 border-b border-[var(--text)] pb-1 text-base font-medium text-[var(--text)] transition-opacity hover:opacity-60 disabled:opacity-40"
       >
         <Send size={16} />
         {labels.submit}

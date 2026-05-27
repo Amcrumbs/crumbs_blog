@@ -15,32 +15,40 @@ export default async function ToolDetailPage({ params }: { params: { slug: strin
   const tool = localizedTool(rawTool, locale);
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[1fr_340px]">
-      <section className="surface p-5 sm:p-6">
-        <p className="font-mono text-xs uppercase text-[var(--accent-strong)]">tools://{tool.slug}</p>
-        <h1 className="mt-3 text-3xl font-semibold text-[var(--text)]">{tool.titleText}</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">{tool.descriptionText}</p>
+    <article className="mx-auto max-w-[840px] pt-2 sm:pt-6">
+      <header className="pb-10">
+        <p className="editorial-eyebrow">tools://{tool.slug}</p>
+        <h1 className="editorial-display mt-5 text-[clamp(2.2rem,5.5vw,4rem)] text-[var(--text)]">
+          {tool.titleText}
+        </h1>
+        <p className="editorial-lede mt-6 max-w-2xl text-lg">{tool.descriptionText}</p>
+      </header>
 
-        <div className="mt-8">
-          <ToolRunner slug={tool.slug} inputType={tool.inputType} labels={t.tools} />
-        </div>
+      <hr className="editorial-rule" />
+
+      <section className="py-12">
+        <ToolRunner slug={tool.slug} inputType={tool.inputType} labels={t.tools} />
       </section>
 
-      <aside className="surface p-5">
-        <div className="flex items-start gap-3">
-          <CheckCircle2 size={19} className="mt-0.5 text-[var(--success)]" />
-          <div>
-            <h2 className="text-lg font-medium text-[var(--text)]">{t.tools.statusTitle}</h2>
-            <p className="mt-2 text-sm leading-6 text-muted">
-              {t.tools.statusBodyPrefix}<span className="font-mono text-[var(--success)]">{t.tools.status[tool.status]}</span>{t.tools.statusBodySuffix}
-            </p>
+      <hr className="editorial-rule" />
+
+      <section className="grid gap-10 py-12 md:grid-cols-2">
+        <div>
+          <div className="mb-3 flex items-center gap-2">
+            <CheckCircle2 size={17} className="text-[var(--success)]" />
+            <p className="editorial-eyebrow">{t.tools.statusTitle}</p>
           </div>
+          <p className="text-base leading-7 text-muted">
+            {t.tools.statusBodyPrefix}
+            <span className="font-mono text-[var(--success)]">{t.tools.status[tool.status]}</span>
+            {t.tools.statusBodySuffix}
+          </p>
         </div>
-        <div className="mt-5 border-t border-[var(--line)] pt-5">
-          <p className="font-mono text-xs text-faint">{t.tools.privacyHint}</p>
-          <p className="mt-2 text-sm leading-6 text-muted">{tool.privacyHintText}</p>
+        <div>
+          <p className="editorial-eyebrow mb-3">{t.tools.privacyHint}</p>
+          <p className="text-base leading-7 text-muted">{tool.privacyHintText}</p>
         </div>
-      </aside>
-    </div>
+      </section>
+    </article>
   );
 }

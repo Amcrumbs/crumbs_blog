@@ -1,27 +1,30 @@
 import Link from "next/link";
-import { ExternalLink, LockKeyhole } from "lucide-react";
+import { LockKeyhole } from "lucide-react";
 import { PageHeading } from "@/components/page-heading";
 import { groupLinks, getLinksByVisibility } from "@/lib/links";
 import { verifyAdminSession } from "@/lib/admin-access";
 import { getDictionary, getLocale, type Locale } from "@/lib/i18n";
 
-function LinkGrid({ groups, locale }: { groups: ReturnType<typeof groupLinks>; locale: Locale }) {
+function LinkList({ groups, locale }: { groups: ReturnType<typeof groupLinks>; locale: Locale }) {
   return (
-    <div className="grid gap-5">
+    <div className="space-y-16">
       {Object.entries(groups).map(([category, links]) => (
-        <section key={category} className="surface p-5">
-          <h2 className="font-mono text-sm text-[var(--accent-strong)]">{category}</h2>
-          <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <section key={category}>
+          <h2 className="editorial-section-heading mb-2">{category}</h2>
+          <div>
             {links.map((link) => (
-              <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className="surface-strong interactive-card block p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="grid h-9 w-9 place-items-center rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--accent-soft)] font-mono text-xs text-[var(--accent-strong)]">
-                    {link.iconLabel ?? link.title.slice(0, 2)}
-                  </div>
-                  <ExternalLink size={16} className="text-faint" />
-                </div>
-                <h3 className="mt-4 text-lg font-medium text-[var(--text)]">{link.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted">{link.description[locale]}</p>
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className="editorial-link-row group"
+              >
+                <span className="editorial-link-title">{link.title}</span>
+                <span className="editorial-link-desc">{link.description[locale]}</span>
+                <span className="editorial-link-marker">
+                  {link.iconLabel ?? "↗"}
+                </span>
               </a>
             ))}
           </div>
@@ -43,28 +46,39 @@ export default async function LinksPage() {
   return (
     <>
       <PageHeading {...t.pages.links} />
-      <LinkGrid groups={groupLinks(publicLinks, locale)} locale={locale} />
+      <LinkList groups={groupLinks(publicLinks, locale)} locale={locale} />
 
-      <section className="mt-5 surface p-5">
-        <div className="mb-4 flex items-center gap-3">
+      <section className="mt-24">
+        <div className="mb-2 flex items-center gap-3 border-b border-[var(--line)] pb-2">
           <LockKeyhole size={18} className="text-[var(--warning)]" />
-          <h2 className="text-lg font-medium text-[var(--text)]">{t.private.bookmarks}</h2>
+          <h2 className="editorial-section-heading flex-1 border-0 pb-0">
+            {t.private.bookmarks}
+          </h2>
         </div>
         {isAdmin ? (
-          <LinkGrid groups={groupLinks(privateLinks, locale)} locale={locale} />
+          <LinkList groups={groupLinks(privateLinks, locale)} locale={locale} />
         ) : (
-          <div className="grid gap-4 lg:grid-cols-[1fr_420px]">
-            <p className="text-sm leading-6 text-muted">
+          <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-baseline">
+            <p className="editorial-lede max-w-xl text-base">
               个人收藏现在跟随管理员登录态显示。未登录时只展示公开导航。
             </p>
-            <Link href="/admin/login" className="button-primary inline-flex items-center justify-center px-4 py-3 text-sm">
-              进入管理员登录
+            <Link
+              href="/admin/login"
+              className="editorial-eyebrow underline decoration-dotted underline-offset-4 hover:text-[var(--text)]"
+            >
+              进入管理员登录 →
             </Link>
           </div>
         )}
       </section>
-      <div className="mt-5 text-right">
-        <Link href="/private" className="font-mono text-xs text-[var(--accent-strong)]">{t.private.openPrivate}</Link>
+
+      <div className="mt-16 text-right">
+        <Link
+          href="/private"
+          className="editorial-eyebrow underline decoration-dotted underline-offset-4 hover:text-[var(--text)]"
+        >
+          {t.private.openPrivate} →
+        </Link>
       </div>
     </>
   );
